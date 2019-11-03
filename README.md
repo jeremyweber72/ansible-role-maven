@@ -1,6 +1,6 @@
-# Ansible Role: aholbreich.maven
+# Ansible Role: jeremyweber72.ansible_role_maven
 
-An Ansible role that installs Apache Maven on linux
+An Ansible role that installs Apache Maven on linux.  Forked from aholbreich.maven
 
 ## Requirements
 
@@ -18,7 +18,7 @@ No hard dependencies for installation. But you keep in mind that you need java.
 
     - hosts: webservers
       roles:
-        - { role: aholbreich.maven }
+        - { role: jeremyweber72.ansible_role_maven }
 
 ## License
 

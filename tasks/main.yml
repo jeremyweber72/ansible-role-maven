@@ -14,14 +14,20 @@
     src: /tmp/maven.sha512
   register: maven_checksum
 
+- name: decode checksum
+  set_fact:
+    decoded_checksum: "{{ maven_checksum['content'] | b64decode }}"
+
 - name: Download maven binary
   get_url:
     url: "{{ maven_url }}"
     dest: /tmp/maven.zip
-    checksum: "sha512: {{ maven_checksum['content'] | b64decode }}"
+    checksum: "sha512: {{ decoded_checksum.split(' ')[0] }}"
 
 - name: Assure {{ maven_prefix }} dir exists
-  file: path={{ maven_prefix }} state=directory
+  file:
+    path: "{{ maven_prefix }}"
+    state: directory
 
 - name: Extract maven to {{ maven_prefix }}
   unarchive:
@@ -29,15 +35,17 @@
     src: /tmp/maven.zip
     dest: "{{ maven_prefix }}"
 
-# - name: Cleanup
-#   file: path={{item}} state=absent
-#   with_items:
-#     - '/tmp/maven.zip'
-#     - '/tmp/maven.md5'
+- name: Cleanup
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - '/tmp/maven.zip'
+    - '/tmp/maven.md5'
 
 - name: Setup maven profile
   template:
-    src: etc/profile.d/maven.sh
+    src: /etc/profile.d/maven.sh
     dest: /etc/profile.d/maven.sh
     owner: root
     group: root
