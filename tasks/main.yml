@@ -45,7 +45,7 @@
 
 - name: Setup maven profile
   template:
-    src: /etc/profile.d/maven.sh
+    src: etc/profile.d/maven.sh
     dest: /etc/profile.d/maven.sh
     owner: root
     group: root
